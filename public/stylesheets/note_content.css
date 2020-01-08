@@ -1,0 +1,10 @@
+.note-content .note-content__content-title{
+    font-family: 'Gamja Flower', cursive;
+    font-size: 40px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid black;
+}
+
+.note-content .note-content__content-content{
+    font-family: 'Noto Sans KR', sans-serif;
+}

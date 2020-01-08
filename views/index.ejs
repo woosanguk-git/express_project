@@ -1,0 +1,31 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title><%=title%></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body class="login-body">
+    <div class="login">
+      <form action="/auth/login_process" method="post" class="login__form">
+        <p><input type="text" name="id" placeholder="ID" /></p>
+        <p><input type="password" name="pwd" placeholder="PASSWORD" /></p>
+        <p><button type="submit">로그인</button></p>
+      </form>
+      <a href="/auth/register">회원가입</a>
+    </div>
+  </body>
+</html>

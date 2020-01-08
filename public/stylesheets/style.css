@@ -1,0 +1,14 @@
+@import "reset.css";
+@import "board.css";
+@import "note_content.css";
+@import "header.css";
+@import url('https://fonts.googleapis.com/css?family=Gamja+Flower|Noto+Sans+KR:100,300,400,500,700,900&display=swap&subset=korean');
+
+/* body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+} */

@@ -1,0 +1,9 @@
+.header .header__title{
+    font-family: 'Gamja Flower', cursive;
+    font-size: 60px;
+}
+
+
+.header .header__main-link{
+    text-emphasis: none;
+}

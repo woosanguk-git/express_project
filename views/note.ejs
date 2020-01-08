@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>login test</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script
+      src="https://kit.fontawesome.com/18ada6d690.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <% include ./header.ejs %>
+    <!-- ejs 분할 이용하기. -->
+
+    <a href="/auth/logout">Logout</a>
+    <div class="listView">
+      <%include ./notebook_list.ejs%>
+
+      <%include ./note_list.ejs%>
+    </div>
+    <script src="/javascripts/notebook.js"></script>
+  </body>
+</html>

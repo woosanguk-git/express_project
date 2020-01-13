@@ -8,7 +8,7 @@
   </head>
   <body>
     <% include ./header.ejs %>
-    <form action="/board/<%=nowNoteBookId%>/createNote_process" method="post">
+    <form action="/board/<%=nowNoteBookId%>/createnote-process" method="post">
       <p><input type="text" name="title" placeholder="노트제목" /></p>
       <p><textarea name="content" cols="100" rows="50"></textarea></p>
       <p><button type="submit">노트생성</button></p>

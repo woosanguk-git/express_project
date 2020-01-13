@@ -1,9 +1,13 @@
-.notebookList {
-    display: inline-flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+.notebooks {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: left;
     margin-right: 30px;
+}
+
+.notebook .notebook-column{
+    display: block;
 }
 
 .noteList{
@@ -12,6 +16,9 @@
     flex-direction: column;
     margin-right: 50px;
 }
+
+
+
 
 .listView{
     display: flex;

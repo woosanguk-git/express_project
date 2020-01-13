@@ -8,7 +8,7 @@
   </head>
   <body>
     <% include ./header.ejs %> 
-    <form action="/board/<%=nowNoteBookId%>/<%=nowNoteId%>/noteModify_process" method="post">
+    <form action="/board/<%=nowNoteBookId%>/<%=nowNoteId%>/notemodify-process" method="post">
       <p><input type="text" name="title" value="<%=noteData[0].title%>" /></p>
       <p><textarea name="content" cols="100" rows="50"><%=noteData[0].content%></textarea></p>
       <p><button type="submit">노트수정</button></p>

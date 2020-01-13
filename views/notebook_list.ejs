@@ -1,14 +1,16 @@
-<div class="notebookList" id="js-notebook-list">
-    <div id="js-notebook-list">
-      <button id="js-notebook__new">NEW Book</button>
-      <button id="js-notebook__notebook-edit">Edit</button>
+<div class="notebooks" id="js-notebooks">
+  <div id="js-notebooks__control-buttons">
+    <!--  js-control-buttons -->
+    <button id="js-control-buttons__new">NEW Book</button>
+    <button id="js-control-buttons__edit">Edit</button>
+  </div>
+  <div id="js-notebooks__notebook js-notebook" class="notebooks__notebook notebook">
+    <%if(notebookList) {%> <% for( var i = 0 ; i < notebookList.length ; i++){%>
+    <div class="notebook-column">
+    <a href="/board/<%=notebookList[i].id%>" class=""><%=notebookList[i].title%></a>
     </div>
-    <%if(notebookList) {%> <% for( var i = 0 ; i < notebookList.length ;
-    i++){ %>
-    <div id="js-notebookList__notebook js-notebook"></div>
-    <a href="/board/<%=notebookList[i].id%>"><%=notebookList[i].title%></a>
     <% }%> <% }%>
   </div>
+</div>
 
-
-  <!-- 아이디 클래스명 명명 다시하기. -->
+<!-- 아이디 클래스명 명명 다시하기. -->

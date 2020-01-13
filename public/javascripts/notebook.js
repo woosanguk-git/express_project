@@ -1,13 +1,16 @@
-const notebook = document.getElementById("js-notebook");
-const newNoteButton = document.getElementById("js-notebook__new");
-const editNotebookButton = document.getElementById("js-notebook__notebook-edit")
+// const notebook = document.getElementById("js-control-buttons");
+const notebook = document.getElementById("js-notebooks__control-buttons");
+const newNoteButton = document.getElementById("js-control-buttons__new");
+const editNotebookButton = document.getElementById("js-control-buttons__edit");
+const notebooks = document.querySelectorAll(".notebook-column");
+console.log(notebooks);
 
 function addForm() {
   const form = document.createElement("form");
   form.setAttribute("charset", "UTF-8");
   form.setAttribute("method", "Post"); //Post 방식
-  form.setAttribute("action", "/board/createNotebook_process");
-  form.setAttribute("id","js-notebook__form")
+  form.setAttribute("action", "/board/createnotebook-process");
+  form.setAttribute("id", "js-notebook__form");
   // html 엘리먼트 생성
   const input = document.createElement("input");
   input.setAttribute("type", "text");
@@ -31,10 +34,9 @@ function addForm() {
 
   notebook.appendChild(form);
 }
-function handleClick(event) {
-
+function handleNewNotebookButton(event) {
   // 이벤트 리스너 제거
-  newNoteButton.removeEventListener("click", handleClick);
+  newNoteButton.removeEventListener("click", handleNewNotebookButton);
   addForm();
 }
 
@@ -48,14 +50,39 @@ function handleClickDeleteBUtton(event) {
 }
 
 // Edit
-function handleEditNotebookButton(){
-  
+function handleEditNotebookButton() {
+  notebookEditForm();
+  addCancelButton();
 }
 
+function addCancelButton(){
+  let editCancelButton = document.createElement("button");
+
+  editCancelButton.innerText = "X";
+  notebook.appendChild(editCancelButton);
+}
+
+function notebookEditForm() {
+  for (let index = 0; index < notebooks.length; index++) {
+    let deleteLink = document.createElement("a");
+    let modifyButton = document.createElement("button");
+    let deleteButton = document.createElement("button");
+
+    deleteLink.setAttribute("href", "/test");
+
+    modifyButton.innerText = "수정";
+    deleteButton.innerText = "삭제";
+
+    deleteLink.appendChild(deleteButton);
+    notebooks[index].appendChild(modifyButton);
+    notebooks[index].appendChild(deleteLink);
+    // console.log(index, notebooks[index]);
+  }
+}
 
 function init() {
-  newNoteButton.addEventListener("click", handleClick);
-  editNotebookButton.addEventListener("click", handleEditNotebookButton)
+  newNoteButton.addEventListener("click", handleNewNotebookButton);
+  editNotebookButton.addEventListener("click", handleEditNotebookButton);
 }
 
 init();

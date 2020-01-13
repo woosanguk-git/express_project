@@ -1,6 +1,6 @@
 <div class="noteList">
   <div class="newNote">
-    <a href="/board/<%=nowNoteBookId%>/createNote"><button>노트작성</button></a>
+    <a href="/board/<%=nowNoteBookId%>/createnote"><button>노트작성</button></a>
   </div>
   <% if(noteList) {%> <% for( var i = 0 ; i < noteList.length ; i++){ %>
   <a href="/board/<%=nowNoteBookId%>/<%=noteList[i].id%>"

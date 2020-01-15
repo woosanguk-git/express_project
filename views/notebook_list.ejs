@@ -6,11 +6,12 @@
   </div>
   <div id="js-notebooks__notebook js-notebook" class="notebooks__notebook notebook">
     <%if(notebookList) {%> <% for( var i = 0 ; i < notebookList.length ; i++){%>
-    <div class="notebook-column">
-    <a href="/board/<%=notebookList[i].id%>" class=""><%=notebookList[i].title%></a>
+    <div class="js-notebook-column">
+    <a href="/board/<%=notebookList[i].id%>" class="js-notebook-column__bookname"> <%=notebookList[i].title%></a>
     </div>
     <% }%> <% }%>
   </div>
+  
 </div>
 
-<!-- 아이디 클래스명 명명 다시하기. -->
+

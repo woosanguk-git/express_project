@@ -68,6 +68,21 @@ router.get("/:notebookid", function(req, res, next) {
   });
 });
 
+// Notebook delete
+router.get("/:notebookid/delete-process", function(req,res,next){
+  const notebookId = req.params.notebookid;
+  const notebookDeleteQuery = `DELETE FROM notebook WHERE id = ${notebookId}`;
+
+  connection.query(notebookDeleteQuery, function(error, result){
+    if (error) {
+      console.log("노트북 삭제 오류.");
+      console.error(error);
+    }
+    res.redirect("/board/main");
+  })
+})
+
+
 router.get("/:notebookid/createnote", function(req, res, next) {
   const notebookId = req.params.notebookid;
   // console.log(notebookname);

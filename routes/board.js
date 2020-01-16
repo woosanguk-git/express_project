@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var sanitizeHtml = require("sanitize-html");
 
 const dbConfig = require("../config/database");
 const mysql = require("mysql");
@@ -30,8 +31,10 @@ router.get("/main", function(req, res, next) {
 
 router.post("/createnotebook-process", function(req, res, next) {
   const post = req.body;
-  const bookname = post.notebookName;
+  let bookname = post.notebookName;
   const userid = req.user.id;
+
+  bookname = sanitizeHtml(bookname);
   const createNotebookQuery = `INSERT INTO notebook(title, modidate,creuser) VALUES('${bookname}', NOW(), '${userid}')`;
   connection.query(createNotebookQuery, function(error, result) {
     if (error) {
@@ -49,9 +52,9 @@ router.get("/:notebookid", function(req, res, next) {
   console.log("노트북 ID : ", req.params.notebookid);
   const notebookId = req.params.notebookid;
   // res.redirect("/board/main");
-  // todo 
+  // todo
   const noteListQuery = `select id, title from note where notebookid = '${notebookId}'`;
-  
+
   connection.query(noteListQuery, function(error, data) {
     if (error) {
       console.log("노트 리스트 불러오기 오류.");
@@ -69,31 +72,37 @@ router.get("/:notebookid", function(req, res, next) {
 });
 
 // Notebook delete
-router.get("/:notebookid/delete-process", function(req,res,next){
+router.get("/:notebookid/delete-process", function(req, res, next) {
   const notebookId = req.params.notebookid;
   const notebookDeleteQuery = `DELETE FROM notebook WHERE id = ${notebookId}`;
 
-  connection.query(notebookDeleteQuery, function(error, result){
+  connection.query(notebookDeleteQuery, function(error, result) {
     if (error) {
       console.log("노트북 삭제 오류.");
       console.error(error);
     }
     res.redirect("/board/main");
-  })
-})
+  });
+});
 
-
+// note create
 router.get("/:notebookid/createnote", function(req, res, next) {
   const notebookId = req.params.notebookid;
   // console.log(notebookname);
-  res.render("create", { nowNoteBookId: notebookId });
+  res.render("create", {
+    nowNoteBookId: notebookId,
+    userDisplayname: req.user.displayname
+  });
 });
 
 router.post("/:notebookid/createnote-process", function(req, res, next) {
   const post = req.body;
-  const notename = post.title;
-  const content = post.content;
+  let notename = post.title;
+  let content = post.content;
   const notebookId = req.params.notebookid;
+  notename = sanitizeHtml(notename);
+  content = sanitizeHtml(content);
+
   const createNoteQuery = `insert into note(title, content, modidate, notebookid) values('${notename}', '${content}', NOW(), ${notebookId})`;
   connection.query(createNoteQuery, function(error, result) {
     if (error) {
@@ -106,6 +115,21 @@ router.post("/:notebookid/createnote-process", function(req, res, next) {
   //   console.log("usertest", req.user.id);
 });
 
+//notebook name modify
+router.post("/:notebookid/modify-process", function(req, res, next) {
+  const notebookId = req.params.notebookid;
+  const post = req.body;
+  const toChangeNotebookName = sanitizeHtml(post.notebookName);
+
+  const changeNotebookNameQuery = `UPDATE notebook SET title ='${toChangeNotebookName}',modidate = NOW() WHERE id = ${notebookId}`;
+  connection.query(changeNotebookNameQuery, function(error, result) {
+    if (error) {
+      console.error("노트북 이름 수정 오류 발생!");
+      console.error(error);
+    }
+    res.redirect(`/board/main`);
+  });
+});
 
 router.get("/:notebookid/:noteid", function(req, res, next) {
   console.log("노트 아이디", req.params.noteid);
@@ -126,10 +150,9 @@ router.get("/:notebookid/:noteid", function(req, res, next) {
       nowNoteBookId: notebookId
     });
   });
-}); 
+});
 
-
-router.get("/:notebookid/:noteid/notemodify", function(req,res,next){
+router.get("/:notebookid/:noteid/notemodify", function(req, res, next) {
   const notebookId = req.params.notebookid;
   const noteId = req.params.noteid;
   const noteContentQuery = `SELECT id, title, content FROM note WHERE id = '${noteId}' and notebookid = '${notebookId}'`;
@@ -138,48 +161,52 @@ router.get("/:notebookid/:noteid/notemodify", function(req,res,next){
       console.log("노트 내용 불러오기 오류.");
       console.error(error);
     }
-    console.log("노트내용 데이터 : ",data)
+    console.log("노트내용 데이터 : ", data);
     res.render("note_modify", {
       userDisplayname: req.user.displayname,
       notebookList: nbList,
       noteList: nList,
       noteData: data,
       nowNoteBookId: notebookId,
-      nowNoteId : noteId
+      nowNoteId: noteId
     });
   });
-})
+});
 
-router.post("/:notebookid/:noteid/notemodify-process", function(req,res,next){
+router.post("/:notebookid/:noteid/notemodify-process", function(
+  req,
+  res,
+  next
+) {
   const notebookId = req.params.notebookid;
   const noteId = req.params.noteid;
   const post = req.body;
-  const notename = post.title;
-  const content = post.content;
+  const notename = sanitizeHtml(post.title);
+  const content = sanitizeHtml(post.content);
 
-  const noteUpdateQuery = `UPDATE note SET title = '${notename}', content = '${content}', modidate = NOW() WHERE id = ${noteId} AND notebookid = ${notebookId}`
-  connection.query(noteUpdateQuery, function(error,result){
+  const noteUpdateQuery = `UPDATE note SET title = '${notename}', content = '${content}', modidate = NOW() WHERE id = ${noteId} AND notebookid = ${notebookId}`;
+  connection.query(noteUpdateQuery, function(error, result) {
     if (error) {
       console.log("노트 내용 수정 오류.");
       console.error(error);
     }
     // console.log("결과 : ", result);
     res.redirect(`/board/${notebookId}/${noteId}`);
-  })
+  });
 });
 
-router.get("/:notebookid/:noteid/notedelete-process", function(req, res, next){
+router.get("/:notebookid/:noteid/notedelete-process", function(req, res, next) {
   const notebookId = req.params.notebookid;
   const noteId = req.params.noteid;
 
-  const noteDeleteQuery = `DELETE FROM note WHERE id = ${noteId} AND notebookid = ${notebookId}`
-  connection.query(noteDeleteQuery, function(error, result){
+  const noteDeleteQuery = `DELETE FROM note WHERE id = ${noteId} AND notebookid = ${notebookId}`;
+  connection.query(noteDeleteQuery, function(error, result) {
     if (error) {
       console.log("노트 삭제 오류.");
       console.error(error);
     }
     // console.log("결과 : ", result);  // TO DO result 이용해서 결과알리기
     res.redirect(`/board/${notebookId}/`);
-  })
-})
+  });
+});
 module.exports = router;

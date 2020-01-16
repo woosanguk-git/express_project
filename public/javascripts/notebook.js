@@ -5,6 +5,7 @@ const editNotebookButton = document.getElementById("js-control-buttons__edit");
 const notebooks = document.querySelectorAll(".js-notebook-column");
 // console.log(newNoteButton.textContent);
 
+// 노트북 생성폼 추가
 function addForm() {
   const form = document.createElement("form");
   form.setAttribute("charset", "UTF-8");
@@ -34,16 +35,19 @@ function addForm() {
 
   notebook.appendChild(form);
 }
+
+// 추가 버턴 누르면 폼 생성
 function handleNewNotebookButton(event) {
   // 이벤트 리스너 제거
   newNoteButton.removeEventListener("click", handleNewNotebookButton);
   addForm();
 }
 
-function handleClickDeleteBUtton(event) {
+// x버튼 눌렀을 때
+function handleClickDeleteButton(event) {
   if (event) {
     const form = notebook.querySelector("#js-notebook__form");
-    this.removeEventListener("click", handleClickDeleteBUtton);
+    this.removeEventListener("click", handleClickDeleteButton);
     notebook.removeChild(form);
   }
   init();
@@ -144,7 +148,7 @@ function handleNotebookModifyButton(event) {
   // console.log(event.toElement.previousElementSibling);
   // console.log(event);
 }
-
+// Edit 버튼 눌렀을 때
 function notebookEditForm() {
   for (let index = 0; index < notebooks.length; index++) {
     let deleteLink = document.createElement("a");

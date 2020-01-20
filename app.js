@@ -7,8 +7,8 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 const session = require("express-session");
-const FileStore = require("session-file-store")(session);
-var sanitizeHtml = require('sanitize-html');
+// const FileStore = require("session-file-store")(session);
+
 
 //mysql session store
 const mysql = require("mysql");

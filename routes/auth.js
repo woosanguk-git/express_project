@@ -5,19 +5,6 @@ const dbConfig = require("../config/database");
 const mysql = require("mysql");
 const connection = mysql.createConnection(dbConfig);
 
-let testAuthData = {
-  id: "bang5180",
-  password: "1111"
-};
-
-function authLoginCheck(req, res) {
-  if (req.session.is_logined) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 // router.post("/login_process", function(req, res, next) {
 //   let post = req.body;
 //   let id = post.id;
@@ -60,7 +47,20 @@ router.post("/register_process", function(req, res, next) {
     }
     res.redirect("/");
   });
-  connection.end();
+});
+
+router.post("/register", function(req, res, next) {
+  const registerID = req.body.id;
+  console.log("123123123", registerID);
+
+  const idCheckQuery = `SELECT count(id) as num FROM user WHERE id = '${registerID}'`;
+  connection.query(idCheckQuery, function(error, data) {
+    const count = data[0].num;
+    // console.log(count);
+    // console.log(typeof count);
+    const resData = {'count' : count};
+    res.json(resData);
+  });
 });
 
 module.exports = router;

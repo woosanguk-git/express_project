@@ -25,7 +25,7 @@ function addForm() {
   const deleteButton = document.createElement("button");
   deleteButton.innerText = "X";
   // x 버튼 이벤트리스너 추가
-  deleteButton.addEventListener("click", handleClickDeleteBUtton);
+  deleteButton.addEventListener("click", handleClickDeleteButton);
   // X 버튼에 id 추가
   deleteButton.setAttribute("id", "js-deleteButton");
 

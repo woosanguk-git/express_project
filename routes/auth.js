@@ -50,15 +50,21 @@ router.post("/register_process", function(req, res, next) {
 });
 
 router.post("/register", function(req, res, next) {
-  const registerID = req.body.id;
-  console.log("123123123", registerID);
-
-  const idCheckQuery = `SELECT count(id) as num FROM user WHERE id = '${registerID}'`;
-  connection.query(idCheckQuery, function(error, data) {
+  const registerData = req.body.data;
+  const type = req.body.type;
+  let checkQuery = "";
+  console.log("123123123", registerData);
+  console.log("123123123", type);
+  if (type == "id") {
+    checkQuery= `SELECT count(id) as num FROM user WHERE id = '${registerData}'`;
+  } else if(type =="displayname"){
+    checkQuery = `SELECT count(id) as num FROM user WHERE displayname = '${registerData}'`;
+  }
+  connection.query(checkQuery, function(error, data) {
     const count = data[0].num;
-    // console.log(count);
+    console.log(count);
     // console.log(typeof count);
-    const resData = {'count' : count};
+    const resData = { count: count };
     res.json(resData);
   });
 });

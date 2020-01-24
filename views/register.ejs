@@ -25,7 +25,8 @@
         <div class="check-displayname-message"></div>
 
         <p><input type="text" name="name" placeholder="NAME" /></p>
-        <p><button type="submit" formaction="/auth/register_process">회원가입</button></p>
+        <input type="hidden" name="overlapcheck" value="" class="js-signup-overlap">
+        <p><button type="button"  class="js-signup-button">회원가입</button></p>
       </form>
     </div>
 

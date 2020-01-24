@@ -20,10 +20,34 @@ const checkDisplaynameMessageDiv = idForm.querySelector(
   ".check-displayname-message"
 );
 
+// sign up
+const signupButton = idForm.querySelector(".js-signup-button");
+const overlapHiddenInput = idForm.querySelector(".js-signup-overlap");
+
+let ID_FLAG = false;
+let PWD_FLAG = false;
+let DN_FLAG = false;
+
 // console.log(registerForm);
 // console.log(idForm);
 // console.log(idInput);
 // console.log(idAjaxSend);
+function reviseIDFlage(count) {
+  if (count == 0) {
+    ID_FLAG = true;
+  } else {
+    ID_FLAG = false;
+  }
+  overlapCheck(ID_FLAG, PWD_FLAG, DN_FLAG);
+}
+function reviseDISPLAYNAMEFlage(count) {
+  if (count == 0) {
+    DN_FLAG = true;
+  } else {
+    DN_FLAG = false;
+  }
+  overlapCheck(ID_FLAG, PWD_FLAG, DN_FLAG);
+}
 
 // id 재입력시 중복체크 메세지 삭제
 function handleIdInput() {
@@ -31,12 +55,11 @@ function handleIdInput() {
 }
 
 // displayname 재입력시 중복체크 메세지 삭제
-function handleDisplaynameInput(){
+function handleDisplaynameInput() {
   checkDisplaynameMessageDiv.innerHTML = "";
 }
 
 function createMessage(count, type) {
-  
   const message = document.createElement("p");
   if (count != 0) {
     message.innerText = `이미 존재하는 ${type}  입니다.`;
@@ -61,6 +84,7 @@ function sendIDAjax(url, idData) {
     let count = result.count;
     let msg = createMessage(count, JSON.parse(data).type);
     checkMessageDiv.appendChild(msg);
+    reviseIDFlage(count);
   });
 }
 
@@ -84,7 +108,7 @@ function createPWDMessage(flag) {
 
   return message;
 }
-
+// pwd 일치 체크
 function handlePwdConfirmInput() {
   pwdConfirmMessage.innerHTML = "";
   const pwdData = pwd.value;
@@ -92,14 +116,17 @@ function handlePwdConfirmInput() {
   let flag = false;
   if (pwdData == pwdConfirmData) {
     flag = true;
+    PWD_FLAG = true;
   } else {
     flag = false;
+    PWD_FLAG = false;
   }
   let msg = createPWDMessage(flag);
   pwdConfirmMessage.appendChild(msg);
+  overlapCheck(ID_FLAG, PWD_FLAG, DN_FLAG);
 }
 
-//
+// 닉네임(displayname) 중복체크 ajax
 function sendDisplaynameAjax(url, displaynameData) {
   let data = { data: displaynameData, type: "displayname" };
   data = JSON.stringify(data);
@@ -114,6 +141,8 @@ function sendDisplaynameAjax(url, displaynameData) {
     // alert(result.count);
     let msg = createMessage(count, JSON.parse(data).type);
     checkDisplaynameMessageDiv.appendChild(msg);
+
+    reviseDISPLAYNAMEFlage(count);
   });
 }
 
@@ -124,18 +153,74 @@ function handleDisplaynameAjaxSend() {
   sendDisplaynameAjax("http://localhost:3000/auth/register", displaynameData);
 }
 
+// overlapcheck
+function overlapCheck(ID_FLAG, PWD_FLAG, DN_FLAG) {
+  if (ID_FLAG == true && PWD_FLAG == true && DN_FLAG == true) {
+    overlapHiddenInput.value = 1;
+  } else{
+    overlapHiddenInput.value = "";
+  }
+}
+
+// ajax 로 회원가입할 데이터를 보낸다.
+function sendRegisterDataAjax(url, registerData) {
+  let data = registerData;
+  data = JSON.stringify(data);
+
+  let oReq = new XMLHttpRequest();
+  oReq.open("POST", url);
+  oReq.setRequestHeader("Content-Type", "application/json");
+  // console.log(data);
+  oReq.send(data);
+  oReq.addEventListener("load", function() {
+    // alert("회원가입이 완료되었습니다.");
+    let result = JSON.parse(oReq.responseText);
+    let flag = result.result;
+    if(flag == true){
+      alert("회원가입 완료.")
+      location.href = "http://localhost:3000/";
+    }
+  });
+}
+
+// 회원가입
+function signup() {
+  const registerData = idForm.getElementsByTagName("input");
+  let overlapCheck = registerData.overlapcheck.value;
+  // console.log(overlapCheck);
+  console.log(ID_FLAG, PWD_FLAG, DN_FLAG);
+  let data = {
+    id: registerData.id.value,
+    pwd: registerData.pwd.value,
+    displayName: registerData.displayName.value,
+    name: registerData.name.value
+  };
+  console.log(overlapCheck);
+  // console.log(data);
+  if (overlapCheck != 1) {
+    alert("회원 데이터를 확인해주십시오.");
+  } else {
+    sendRegisterDataAjax("http://localhost:3000/auth/register_process", data);
+  }
+}
+
 // init
 function init() {
-  //id
+  // const tt = idForm.getElementsByTagName("input");
+  // console.log(tt);
+  // id
   idAjaxSend.addEventListener("click", handleIdAjaxSend);
   idInput.addEventListener("input", handleIdInput);
 
-  //pwd
+  // pwd
   pwdConfirm.addEventListener("input", handlePwdConfirmInput);
 
-  //displayname
+  // displayname
   displaynameAjaxSend.addEventListener("click", handleDisplaynameAjaxSend);
-  displaynameInput.addEventListener("input",handleDisplaynameInput)
+  displaynameInput.addEventListener("input", handleDisplaynameInput);
+
+  // sign up
+  signupButton.addEventListener("click", signup);
 }
 
 init();

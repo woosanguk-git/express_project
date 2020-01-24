@@ -38,14 +38,17 @@ router.get("/register", function(req, res, next) {
 
 router.post("/register_process", function(req, res, next) {
   let userData = req.body; // body-parser moudle 사용
+  console.log("유저데이터", userData);
+  console.log("리퀘바디", req.body);
   const userInsertQuery = `insert into user values('${userData.id}','${userData.pwd}','${userData.displayName}','${userData.name}')`;
   // console.log(userData.id);
-  connection.query(userInsertQuery, function(error, data) {
+  connection.query(userInsertQuery, function(error, result) {
     if (error) {
       console.error("Register data insert error in mysql");
       console.error(error);
     }
-    res.redirect("/");
+    const resData = {result : true}
+    res.json(resData);
   });
 });
 
@@ -53,8 +56,8 @@ router.post("/register", function(req, res, next) {
   const registerData = req.body.data;
   const type = req.body.type;
   let checkQuery = "";
-  console.log("123123123", registerData);
-  console.log("123123123", type);
+  // console.log("123123123", registerData);
+  // console.log("123123123", type);
   if (type == "id") {
     checkQuery= `SELECT count(id) as num FROM user WHERE id = '${registerData}'`;
   } else if(type =="displayname"){

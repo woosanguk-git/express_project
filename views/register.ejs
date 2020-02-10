@@ -11,13 +11,13 @@
       
       <form method="post" id="js-user-register__form">
         
-        <input type="text" name="id" placeholder="ID" class="js-user-register__idForm-id"/>
+        <input type="text" name="id" placeholder="ID" class="js-user-register__idForm-id "/>
         
         <input type="button" value="중복확인"  class="id-ajaxsend" >
-        <div class="check-message"></div>
+        <div class="check-message "></div>
         
         
-        <p><input type="password" name="pwd" placeholder="PASSWORD"  class="js-user-register__idForm-pwd"/></p>
+        <p><input type="password" name="pwd" placeholder="PASSWORD"  class="js-user-register__idForm-pwd" /></p>
         <p><input type="password" name="confirmPwd" placeholder="CONFIRM PASSWORD" class="js-user-register__idForm-pwd-confirm"/></p>
         <div class="pwdconfirm-message"></div>
         <input type="text" name="displayName" placeholder="DISPLAYNAME" class="js-user-register__idForm-displayname"/>
@@ -26,7 +26,8 @@
 
         <p><input type="text" name="name" placeholder="NAME" /></p>
         <input type="hidden" name="overlapcheck" value="" class="js-signup-overlap">
-        <p><button type="button"  class="js-signup-button">회원가입</button></p>
+        <button type="button"  class="js-signup-button">회원가입</button>
+        <a href="/"><button type="button">취소</button></a>
       </form>
     </div>
 
